@@ -16,7 +16,8 @@
 #ifndef _IFACE_NRF24L01_H_
 #define _IFACE_NRF24L01_H_
 
-#include <Arduino.h>
+#include <stdint.h>
+typedef uint8_t u8;
 
 // Register map
 enum {
@@ -118,5 +119,43 @@ enum TX_Power {
 #define FLUSH_TX      0xE1
 #define FLUSH_RX      0xE2
 #define REUSE_TX_PL   0xE3
+
+void NRF24L01_Initialize();
+u8 NRF24L01_Reset();
+u8 NRF24L01_WriteReg(u8 reg, u8 data);
+void NRF24L01_WriteRegisterMulti(u8 reg, const u8 data[], u8 length);
+u8 NRF24L01_WritePayload(u8 *data, u8 len);
+u8 NRF24L01_ReadReg(u8 reg);
+u8 NRF24L01_ReadRegisterMulti(u8 reg, u8 data[], u8 length);
+u8 NRF24L01_ReadPayload(u8 *data, u8 len);
+
+u8 NRF24L01_GetStatus(void);
+u8 NRF24L01_GetDynamicPayloadSize(void);
+u8 NRF24L01_FlushTx();
+u8 NRF24L01_FlushRx();
+u8 NRF24L01_Activate(u8 code);
+
+
+// Bitrate 0 - 1Mbps, 1 - 2Mbps, 3 - 250K (for nRF24L01+)
+u8 NRF24L01_SetBitrate(u8 bitrate);
+
+u8 NRF24L01_SetPower(enum TX_Power power);
+void NRF24L01_SetTxRxMode(enum TXRX_State);
+
+// To enable radio transmit after WritePayload you need to turn the radio
+//void NRF24L01_PulseCE();
+
+// XN297 emulation layer
+enum {
+    XN297_UNSCRAMBLED = 0,
+    XN297_SCRAMBLED
+};
+
+void XN297_SetTXAddr(const u8* addr, int len);
+void XN297_SetRXAddr(const u8* addr, int len);
+void XN297_Configure(u8 flags);
+void XN297_SetScrambledMode(const u8 mode);
+u8 XN297_WritePayload(u8* msg, int len);
+u8 XN297_ReadPayload(u8* msg, int len);
 
 #endif

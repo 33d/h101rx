@@ -4,3 +4,10 @@
 nRF24_multipro/Debug
 nRF24_multipro/Release
 nRF24_multipro/Visual Micro
+/.cproject
+/.project
+/.settings
+*.o
+*.swp
+/nRF24_multipro/nrf24_multipro_rx
+

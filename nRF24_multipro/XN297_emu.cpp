@@ -13,6 +13,12 @@
  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "iface_nrf24l01.h"
+#include <stdint.h>
+#include <string.h>
+
+#define _BV(x) (1<<x)
+
 static uint8_t xn297_addr_len;
 static uint8_t xn297_tx_addr[5];
 static uint8_t xn297_rx_addr[5];
@@ -57,7 +63,7 @@ uint16_t crc16_update(uint16_t crc, unsigned char a)
     return crc;
 }
 
-void XN297_SetTXAddr(const uint8_t* addr, uint8_t len)
+void XN297_SetTXAddr(const uint8_t* addr, int len)
 {
     if (len > 5) len = 5;
     if (len < 3) len = 3;
@@ -78,7 +84,7 @@ void XN297_SetTXAddr(const uint8_t* addr, uint8_t len)
     memcpy(xn297_tx_addr, addr, len);
 }
 
-void XN297_SetRXAddr(const uint8_t* addr, uint8_t len)
+void XN297_SetRXAddr(const uint8_t* addr, int len)
 {
     if (len > 5) len = 5;
     if (len < 3) len = 3;
@@ -99,7 +105,7 @@ void XN297_Configure(uint8_t flags)
     NRF24L01_WriteReg(NRF24L01_00_CONFIG, flags);
 }
 
-uint8_t XN297_WritePayload(uint8_t* msg, uint8_t len)
+uint8_t XN297_WritePayload(uint8_t* msg, int len)
 {
     uint8_t buf[32];
     uint8_t res;
@@ -133,7 +139,7 @@ uint8_t XN297_WritePayload(uint8_t* msg, uint8_t len)
     return res;
 }
 
-uint8_t XN297_ReadPayload(uint8_t* msg, uint8_t len)
+uint8_t XN297_ReadPayload(uint8_t* msg, int len)
 {
     uint8_t res = NRF24L01_ReadPayload(msg, len);
     for(uint8_t i=0; i<len; i++)

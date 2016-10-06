@@ -20,9 +20,24 @@
 #define BAYANG_RF_BIND_CHANNEL  0
 #define BAYANG_ADDRESS_LENGTH   5
 
+#include "util.h"
+
 static uint8_t Bayang_rf_chan = 0;
 static uint8_t Bayang_rf_channels[BAYANG_RF_NUM_CHANNELS] = {0,};
 static uint8_t Bayang_rx_tx_addr[BAYANG_ADDRESS_LENGTH];
+
+void Bayang_recv_packet();
+void Bayang_bind_rx();
+
+#include "iface_nrf24l01.h"
+#include "nrf24_multipro.h"
+
+#define _BV(x) (1<<x)
+
+#define RX_MODE 1
+
+uint8_t packet[32];
+uint8_t transmitterID[4];
 
 enum{
     // flags going to packet[2]

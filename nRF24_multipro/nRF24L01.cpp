@@ -13,6 +13,12 @@
  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "util.h"
+#include "iface_nrf24l01.h"
+#include "nrf24_multipro.h"
+#include "spi.h"
+#include "nrf_hw.h"
+
 static uint8_t rf_setup;
 
 uint8_t NRF24L01_WriteReg(uint8_t address, uint8_t data)
